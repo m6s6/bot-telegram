@@ -38,26 +38,17 @@ except:
 
 @bot.message_handler(commands=["info"])
 def cmd_info(message):
-    bot.send_message(message.chat.id, "Асисстент бот формирует новостную подборку на 'Сегодня' \n"
-                                      "сообщения кроме команд он не принимает\n"
-                                      "Для выбора свежих новостей набери или нажми /news")
+    bot.send_message(message.chat.id, "Асисстент бот формирует новостную подборку на 'Сегодня' \n сообщения кроме команд он не принимает\nДля выбора свежих новостей набери или нажми /news")
 
 
 @bot.message_handler(commands=["start"])
 def cmd_start(message):
     print(dtworker.get_name(message.from_user.id))
     if dtworker.get_name(message.from_user.id)[0] != None:
-        bot.send_message(message.chat.id, f"Добрый день, {dtworker.get_name(message.from_user.id)[1]}!:) \n"
-                                          "Рады снова тебя видеть, \n" 
-                                          f"последний раз ты смотрел новости в категории {dtworker.get_name(message.from_user.id)[2]}!\n"
-                                          "Для выбора свежих новостей набери или нажми /news \n"
-                                          "Для более подробной информации по данному продукту нажми /info")
+        bot.send_message(message.chat.id, f"Добрый день, {dtworker.get_name(message.from_user.id)[1]}!:) \n Рады снова тебя видеть, \nпоследний раз ты смотрел новости в категории {dtworker.get_name(message.from_user.id)[2]}!\nДля выбора свежих новостей набери или нажми /news \nДля более подробной информации по данному продукту нажми /info")
     else:
         dtworker.insert_user(message.from_user.id, message.from_user.first_name)
-        bot.send_message(message.chat.id, f"Добрый день, {message.from_user.first_name}!:) \n"
-                                          "Мы рады, что ты присоединился к новостному чат Боту!\n"
-                                          "Для выбора свежих новостей набери или нажми /news \n"
-                                          "Для более подробной информации по данному продукту нажми /info")
+        bot.send_message(message.chat.id, f"Добрый день, {message.from_user.first_name}!:) \nМы рады, что ты присоединился к новостному чат Боту!\nДля выбора свежих новостей набери или нажми /news \nДля более подробной информации по данному продукту нажми /info")
     print(message)
 
 
@@ -92,16 +83,12 @@ def inline(c):
         except:
             pass
 
-        bot.send_message(c.message.chat.id, f'Это все новости на сегодня в разделе {c.data} \n'
-                                            'Чтобы выбрать другую категорию нажмите /news')
+        bot.send_message(c.message.chat.id, f'Это все новости на сегодня в разделе {c.data} \nЧтобы выбрать другую категорию нажмите /news')
 
 
 @bot.message_handler(func=lambda message: message.text.strip().lower() not in ('/info', '/start', '/news'))
 def cmd_msg(message):
-    bot.send_message(message.chat.id, "Асисстент бот не знает Ваш язык \n"
-                                      "и сообщения кроме команд он не принимает\n"
-                                      "Для выбора свежих новостей набери или нажми /news \n"
-                                      "Для более подробной информации по данному продукту нажми /info")
+    bot.send_message(message.chat.id, "Асисстент бот не знает Ваш язык \nи сообщения кроме команд он не принимает \nДля выбора свежих новостей набери или нажми /news \nДля более подробной информации по данному продукту нажми /info")
 
 
 if __name__ == '__main__':
