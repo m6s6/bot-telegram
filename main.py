@@ -1,16 +1,16 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
+import os
 import requests
 import telebot
 import config
+from flask import Flask, request
 
 from keyboa import keyboa_maker
 from bs4 import BeautifulSoup
 import dtworker
 
 bot = telebot.TeleBot(config.token)
-# server = Flask(__name__)
+server = Flask(__name__)
 url = config.URL
 mbox = requests.get(url).text
 soup = BeautifulSoup(mbox, 'html')
@@ -25,16 +25,16 @@ try:
 except:
     pass
 
-# @ server.route ('/' + config.token, methods = ['POST'])
-# def getMessage():
-#    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read(). decode("utf- 8 "))])
-#    return "! ", 200
-#
-# @ server.route ("/")
-# def webhook():
-#    bot.remove_webhook()
-#    bot.set_webhook(url='https://maksim-news-bot.herokuapp.com/' + config.token)
-#    return "!", 200
+@ server.route ('/' + config.token, methods = ['POST'])
+def getMessage():
+   bot.process_new_updates([telebot.types.Update.de_json(request.stream.read(). decode("utf- 8 "))])
+   return "! ", 200
+
+@ server.route ("/")
+def webhook():
+   bot.remove_webhook()
+   bot.set_webhook(url='https://maksim-news-bot.herokuapp.com/' + config.token)
+   return "!", 200
 
 @bot.message_handler (commands=["info"])
 def cmd_info(message):
@@ -100,5 +100,5 @@ def cmd_msg(message):
 
 
 if __name__ == '__main__':
-    # server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
-    bot.infinity_polling()
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+    # bot.infinity_polling()
