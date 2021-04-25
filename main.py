@@ -3,14 +3,14 @@ import os
 import requests
 import telebot
 import config
-from flask import Flask, request
+# from flask import Flask, request
 
 from keyboa import keyboa_maker
 from bs4 import BeautifulSoup
 import dtworker
 
 bot = telebot.TeleBot(config.token)
-server = Flask(__name__)
+# server = Flask(__name__)
 url = config.URL
 mbox = requests.get(url).text
 soup = BeautifulSoup(mbox, 'html')
@@ -25,16 +25,16 @@ try:
 except:
     pass
 
-@ server.route ('/' + config.token, methods = ['POST'])
-def getMessage():
-   bot.process_new_updates([telebot.types.Update.de_json(request.stream.read(). decode("utf- 8 "))])
-   return "! ", 200
-
-@ server.route ("/")
-def webhook():
-   bot.remove_webhook()
-   bot.set_webhook(url='https://maksim-news-bot.herokuapp.com/' + config.token)
-   return "!", 200
+# @ server.route ('/' + config.token, methods = ['POST'])
+# def getMessage():
+#    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read(). decode("utf- 8 "))])
+#    return "! ", 200
+#
+# @ server.route ("/")
+# def webhook():
+#    bot.remove_webhook()
+#    bot.set_webhook(url='https://maksim-news-bot.herokuapp.com/' + config.token)
+#    return "!", 200
 
 @bot.message_handler (commands=["info"])
 def cmd_info(message):
@@ -44,16 +44,16 @@ def cmd_info(message):
 
 @bot.message_handler(commands=["start"])
 def cmd_start(message):
-    print(dtworker.get_name(message.from_user.id))
-    if dtworker.get_name(message.from_user.id)[0] != None:
+    print(dtworker.get_name(message.chat.id))
+    if dtworker.get_name(message.chat.id)[0]:
         bot.send_message(message.chat.id, f"Добрый день, {dtworker.get_name(message.from_user.id)[1]}!:) "
                                           f"\n Рады снова тебя видеть, \nпоследний раз ты смотрел новости в категории "
                                           f"{dtworker.get_name(message.from_user.id)[2]}!\nДля выбора свежих новостей "
                                           f"набери или нажми /news \nДля более подробной информации по данному продукту"
                                           f"нажми /info")
     else:
-        dtworker.insert_user(message.from_user.id, message.from_user.first_name)
-        bot.send_message(message.chat.id, f"Добрый день, {message.from_user.first_name}!:) \nМы рады, что ты "
+        dtworker.insert_user(message.chat.id, message.chat.first_name)
+        bot.send_message(message.chat.id, f"Добрый день, {message.chat.first_name}!:) \nМы рады, что ты "
                                           f"присоединился к новостному чат Боту!\nДля выбора свежих новостей набери "
                                           f"или нажми /news \nДля более подробной информации по данному продукту "
                                           f"нажми /info")
@@ -100,5 +100,5 @@ def cmd_msg(message):
 
 
 if __name__ == '__main__':
-    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
-    #  bot.infinity_polling()
+    # server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+    bot.infinity_polling()
